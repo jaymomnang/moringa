@@ -4,14 +4,14 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 
-var TaskSchema = new Schema({
-  taskid: {
+var GradeSchema = new Schema({
+  email: {
     type: String,
-    Required: 'Kindly enter the taskId'
+    Required: 'Kindly enter the email address'
   },
-  description: {
+  fullname: {
     type: String,
-    Required: 'Kindly enter the name of the task'
+    Required: 'Kindly enter the your fullname'
   },
   courses: {
     course: {
@@ -24,23 +24,15 @@ var TaskSchema = new Schema({
     },
     grade_point: {
       type: Number
+    },
+    AttendancePoint: {
+      type: Number
     }
-  },
-  DueDate: {
-    type: Date,
-    default: Date.now
   },
   Created_date: {
     type: Date,
     default: Date.now
   },
-  status: {
-    type: [{
-      type: String,
-      enum: ['pending', 'ongoing', 'completed']
-    }],
-    default: ['pending']
-  }
 });
 
-module.exports = mongoose.model('Tasks', TaskSchema);
+module.exports = mongoose.model('Grades', GradeSchema);

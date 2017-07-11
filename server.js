@@ -4,6 +4,10 @@ var express = require('express'),
   mongoose = require('mongoose'),
   Task = require('./api/models/todoListModel'),
   User = require('./api/models/usersModel'),
+  Course = require('./api/models/CoursesModel'),
+  Attendance = require('./api/models/AttendanceModel'),
+  Grade = require('./api/models/gradesModel'),
+  //Course = require('./api/models/CoursesModel'),
   bodyParser = require('body-parser');
 
 mongoose.Promise = global.Promise;
@@ -14,7 +18,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 
-var routes = require('./api/routes/todoListRoutes');
+var routes = require('./api/routes/mcRoutes');
 routes(app);
 
 
