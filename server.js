@@ -3,10 +3,11 @@ var express = require('express'),
   port = process.env.PORT || 3100,
   mongoose = require('mongoose'),
   Task = require('./api/models/todoListModel'),
+  User = require('./api/models/usersModel'),
   bodyParser = require('body-parser');
 
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost:27017/Tododb');
+mongoose.connect('mongodb://localhost:27017/moringadb');
 
 
 app.use(bodyParser.urlencoded({ extended: true }));
