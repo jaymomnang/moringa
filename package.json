@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/jaymomnang/moringa#readme",
   "devDependencies": {
+    "body-parser": "^1.17.2",
     "nodemon": "^1.11.0"
   },
   "dependencies": {

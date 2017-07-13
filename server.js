@@ -13,16 +13,11 @@ var express = require('express'),
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost:27017/moringadb');
 
-
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-
 
 var routes = require('./api/routes/mcRoutes');
 routes(app);
 
-
 app.listen(port);
-
-
-console.log('todo list RESTful API server started on: ' + port);
+console.log('MoringaCore RESTful API server started on: ' + port);

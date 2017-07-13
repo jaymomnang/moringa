@@ -42,7 +42,7 @@ exports.authenticate = function(req, res) {
 };
 
 exports.update_user_prof = function(req, res) {
-  user.findOneAndUpdate({_id: req.params.email}, req.body, {new: true}, function(err, user) {
+  user.findOneAndUpdate({email: req.params.email}, req.body, {new: true}, function(err, user) {
     if (err)
       res.send(err);
     res.json(user);
@@ -50,7 +50,7 @@ exports.update_user_prof = function(req, res) {
 };
 
 exports.delete_user = function(req, res) {
-  user.findOneAndUpdate({_id: req.params.email}, req.body, {new: true}, function(err, user) {
+  user.findOneAndUpdate({email: req.params.email}, req.body, {new: true}, function(err, user) {
     if (err)
       res.send(err);
       res.json({message: 'User deactivated successfully'});

@@ -40,6 +40,10 @@ var TaskSchema = new Schema({
       enum: ['pending', 'ongoing', 'completed']
     }],
     default: ['pending']
+  },
+  isActive: {
+    type: Boolean,
+    default: false
   }
 });
 

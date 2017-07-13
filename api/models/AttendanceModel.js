@@ -13,12 +13,32 @@ var AttendanceSchema = new Schema({
     type: String,
     Required: 'Kindly enter your fullname'
   },
-  a_date: {
-    type: Date,
-    deafult: Date.now
+  att_id: {
+    type: String,
+    deafult: 'ATT0000001'
+  },
+  year: {
+    type: Number
+  },
+  month: {
+    type: Number
+  },
+  day: {
+    type: Number
+  },
+  time: {
+    type: String
   },
   gradepoint: {
     type: Number
+  },
+  Created_date: {
+    type: Date,
+    default: Date.now
+  },
+  isActive: {
+    type: Boolean,
+    default: false
   }
 });
 
