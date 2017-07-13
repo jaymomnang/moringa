@@ -5,6 +5,10 @@ var Schema = mongoose.Schema;
 
 
 var GradeSchema = new Schema({
+  grade: {
+    type: String,
+    default: 'GP-0000001'
+  },
   email: {
     type: String,
     Required: 'Kindly enter the email address'
@@ -33,6 +37,10 @@ var GradeSchema = new Schema({
     type: Date,
     default: Date.now
   },
+  isActive: {
+    type: Boolean,
+    default: false
+  }
 });
 
 module.exports = mongoose.model('Grades', GradeSchema);

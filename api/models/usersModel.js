@@ -39,6 +39,10 @@ var UserSchema = new Schema({
       enum: ['active', 'inactive', 'suspended']
     }],
     default: ['inactive']
+  },
+  isActive: {
+    type: Boolean,
+    default: false
   }
 });
 

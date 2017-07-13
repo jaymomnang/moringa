@@ -1,46 +1,44 @@
 'use strict';
 var mongoose = require('mongoose'),
-  Course = mongoose.model('Courses');
+  Attendance = mongoose.model('Attendance');
 
-exports.list_all_courses = function(req, res) {
-  Course.find({}, function(err, course) {
+exports.list_all_attendance = function(req, res) {
+  Attendance.find({}, function(err, attendance) {
     if (err)
       res.send(err);
-    res.json(course);
+      res.json(attendance);
   });
 };
 
-exports.create_a_course = function(req, res) {
-  var new_course = new Course(req.body);
-  new_course.save(function(err, course) {
+exports.add_attendance = function(req, res) {
+  var new_attendance = new Attendance(req.body);
+  new_attendance.save(function(err, attendance) {
     if (err)
       res.send(err);
-    res.json(course);
+      res.json(attendance);
   });
 };
 
-exports.read_a_course = function(req, res) {
-  Course.findById(req.params.course, function(err, course) {
+exports.get_attendance = function(req, res) {
+  Attendance.find({email: req.params.email, att_id: req.params.att_id}, function(err, attendance) {
     if (err)
       res.send(err);
-    res.json(course);
+      res.json(attendance);
   });
 };
 
-exports.update_a_course = function(req, res) {
-  Course.findOneAndUpdate({_id: req.params.course}, req.body, {new: true}, function(err, course) {
+exports.update_attendance = function(req, res) {
+  Attendance.findOneAndUpdate({email: req.params.email, att_id: req.params.att_id}, req.body, {new: true}, function(err, attendance) {
     if (err)
       res.send(err);
-    res.json(course);
+      res.json(attendance);
   });
 };
 
-exports.delete_a_course = function(req, res) {
-  Course.remove({
-    _id: req.params.taskId
-  }, function(err, task) {
+exports.delete_attendance = function(req, res) {
+  Attendance.findOneAndUpdate({email: req.params.email, att_id: req.params.att_id}, req.body, {new: true}, function(err, attendance) {
     if (err)
       res.send(err);
-    res.json({ message: 'Course successfully deactivated' });
-  });
+      res.json({message: 'Attendance successfully deactivated'});
+  });  
 };
