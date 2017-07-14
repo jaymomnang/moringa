@@ -8,7 +8,6 @@ var getHash = function(pwd){
   const hash = crypt.createHmac('sha256', secret)
                      .update(pwd)
                      .digest('hex');
-  console.log(hash);
   return hash;
 }
 

@@ -38,7 +38,7 @@ var AttendanceSchema = new Schema({
   },
   isActive: {
     type: Boolean,
-    default: false
+    default: true
   }
 });
 
