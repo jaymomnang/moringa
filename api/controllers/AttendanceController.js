@@ -27,6 +27,14 @@ exports.get_attendance = function(req, res) {
   });
 };
 
+exports.get_last_attendance = function(req, res) {
+  Attendance.findOne({}).sort({att_id: -1}).exec(function(err, attendance) {
+    if (err)
+      res.send(err);
+      res.json(attendance);
+  });
+};
+
 exports.update_attendance = function(req, res) {
   Attendance.findOneAndUpdate({email: req.params.email, att_id: req.params.att_id}, req.body, {new: true}, function(err, attendance) {
     if (err)
@@ -40,5 +48,5 @@ exports.delete_attendance = function(req, res) {
     if (err)
       res.send(err);
       res.json({message: 'Attendance successfully deactivated'});
-  });  
+  });
 };

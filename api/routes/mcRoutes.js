@@ -50,6 +50,9 @@ module.exports = function(app) {
   app.route('/attendance')
     .get(attendance.list_all_attendance)
     .post(attendance.add_attendance);
+    
+  app.route('/attendance/getlast')
+    .get(attendance.get_last_attendance);
 
   app.route('/attendance/:email/:att_id')
     .get(attendance.get_attendance)
