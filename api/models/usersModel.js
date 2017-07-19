@@ -40,6 +40,10 @@ var UserSchema = new Schema({
     }],
     default: ['inactive']
   },
+  role: {
+    type: String,
+    default: 'Student'
+  },
   isActive: {
     type: Boolean,
     default: false

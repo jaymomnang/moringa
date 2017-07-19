@@ -27,6 +27,14 @@ exports.get_attendance = function(req, res) {
   });
 };
 
+exports.get_user_attendance = function(req, res) {
+  Attendance.find({email: req.params.email}, function(err, attendance) {
+    if (err)
+      res.send(err);
+      res.json(attendance);
+  });
+};
+
 exports.get_last_attendance = function(req, res) {
   Attendance.findOne({}).sort({att_id: -1}).exec(function(err, attendance) {
     if (err)
