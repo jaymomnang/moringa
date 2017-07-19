@@ -58,3 +58,12 @@ exports.delete_attendance = function(req, res) {
       res.json({message: 'Attendance successfully deactivated'});
   });
 };
+
+
+exports.remove_attendance = function(req, res) {
+  Attendance.remove({email: req.params.email}, function(err, user) {
+    if (err)
+     res.send(err);
+     res.json({ message: 'User successfully removed' });
+  });
+};
