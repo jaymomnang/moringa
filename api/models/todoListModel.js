@@ -22,7 +22,7 @@ var TaskSchema = new Schema({
       type: String,
       Required: 'Kindly enter the course description'
     },
-    grade_point: {
+    gradepoint: {
       type: Number
     }
   },

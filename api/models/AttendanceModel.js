@@ -15,7 +15,7 @@ var AttendanceSchema = new Schema({
   },
   att_id: {
     type: String,
-    deafult: 'ATT0000001'
+    default: 'ATT0000001'
   },
   year: {
     type: Number
@@ -38,7 +38,7 @@ var AttendanceSchema = new Schema({
   },
   isActive: {
     type: Boolean,
-    default: false
+    default: true
   }
 });
 
