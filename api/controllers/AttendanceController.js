@@ -12,11 +12,31 @@ exports.list_all_attendance = function(req, res) {
 
 exports.add_attendance = function(req, res) {
   var new_attendance = new Attendance(req.body);
-  new_attendance.save(function(err, attendance) {
-    if (err)
-      res.send(err);
-      res.json(attendance);
+
+  //check if data exists already.
+  Attendance.find({email: new_attendance.email, time: new_attendance.time, year: new_attendance.year, month: new_attendance.month, day: new_attendance.day}, 'att_id email', function(err, data) {
+    if (err) return err;
+    if (data.length == 0){
+
+      //get tha last attendance id
+      Attendance.findOne({}, 'att_id').sort({att_id: -1}).exec(function(err, attendance) {
+        if (err) return err;
+
+        //get the next attendance number and save
+
+        new_attendance.att_id =  getNewAttendanceId(attendance.att_id);
+        new_attendance.save(function(err, attendance) {
+          if (err)
+            res.send(err);
+            res.json(attendance);
+        });
+
+      });
+    }else{
+      res.json({ message: 'attendance already recorded' });
+    }
   });
+
 };
 
 exports.get_attendance = function(req, res) {
@@ -34,6 +54,15 @@ exports.get_user_attendance = function(req, res) {
       res.json(attendance);
   });
 };
+
+exports.get_single_attendance = function(req, res){
+  Attendance.findOne({email: req.params.email, time: req.params.time}, function(err, attendance) {
+    if (err)
+      res.send(err);
+      res.json(attendance);
+  });
+}
+
 
 exports.get_last_attendance = function(req, res) {
   Attendance.findOne({}).sort({att_id: -1}).exec(function(err, attendance) {
@@ -66,4 +95,33 @@ exports.remove_attendance = function(req, res) {
      res.send(err);
      res.json({ message: 'User successfully removed' });
   });
+};
+
+//internally generated numbers for attendance records.
+var getNewAttendanceId = function(currentID){
+      var pos = Number(currentID.substring(3,10)) + 1;
+      var nxt = "ATT000000";
+      switch(pos.toString().length) {
+          case 2:
+              nxt = "ATT00000" + pos.toString();
+              break;
+          case 3:
+              nxt = "ATT0000" + pos.toString();
+              break;
+          case 4:
+              nxt = "ATT000" + pos.toString();
+              break;
+          case 5:
+              nxt = "ATT00" + pos.toString();
+              break;
+          case 6:
+              nxt = "ATT0" + pos.toString();
+              break;
+          case 7:
+              nxt = "ATT" + pos.toString();
+              break;
+          default:
+              nxt = nxt + pos.toString();
+    }
+    return nxt;
 };
