@@ -14,7 +14,7 @@ exports.add_attendance = function(req, res) {
   var new_attendance = new Attendance(req.body);
 
   //check if data exists already.
-  Attendance.find({email: new_attendance.email, time: new_attendance.time, year: new_attendance.year, month: new_attendance.month, day: new_attendance.day}, 'att_id email', function(err, data) {
+  Attendance.find({email: new_attendance.email, year: new_attendance.year, month: new_attendance.month, day: new_attendance.day}, 'att_id email', function(err, data) {
     if (err) return err;
     if (data.length == 0){
 
@@ -23,8 +23,13 @@ exports.add_attendance = function(req, res) {
         if (err) return err;
 
         //get the next attendance number and save
+        var attId = 'ATT0000000';
 
-        new_attendance.att_id =  getNewAttendanceId(attendance.att_id);
+        if (attendance != null){
+            attId = attendance.att_id;
+        }
+
+        new_attendance.att_id =  getNewAttendanceId(attId);
         new_attendance.save(function(err, attendance) {
           if (err)
             res.send(err);
@@ -93,7 +98,7 @@ exports.remove_attendance = function(req, res) {
   Attendance.remove({email: req.params.email}, function(err, user) {
     if (err)
      res.send(err);
-     res.json({ message: 'User successfully removed' });
+     res.json({ message: 'attendance successfully removed' });
   });
 };
 

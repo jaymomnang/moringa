@@ -13,7 +13,7 @@ var getHash = function(pwd){
 
 
 exports.get_users = function(req, res) {
-  User.find({}, function(err, user) {
+  User.find({}, 'email firstname lastname role isActive', function(err, user) {
     if (err)
       res.send(err);
     res.json(user);

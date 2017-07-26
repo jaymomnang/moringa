@@ -9,6 +9,10 @@ var TaskSchema = new Schema({
     type: String,
     Required: 'Kindly enter the taskId'
   },
+  email: {
+    type: String,
+    Required: 'Kindly enter your email address'
+  },
   description: {
     type: String,
     Required: 'Kindly enter the name of the task'
