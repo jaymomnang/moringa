@@ -40,5 +40,12 @@ exports.delete_task = function(req, res) {
     if (err)
       res.send(err);
       res.json({ message: 'Task successfully deactivated' });
-  });  
+  });
+};
+
+exports.remove_task = function(req, res) {
+  Task.remove({course: req.params.course}, function(err, user) {
+    if (err) res.send(err);
+     res.json({ message: 'Task successfully removed' });
+ });
 };
