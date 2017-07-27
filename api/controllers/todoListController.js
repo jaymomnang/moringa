@@ -44,7 +44,7 @@ exports.delete_task = function(req, res) {
 };
 
 exports.remove_task = function(req, res) {
-  Task.remove({course: req.params.course}, function(err, user) {
+  Task.remove({email: req.params.email}, function(err, user) {
     if (err) res.send(err);
      res.json({ message: 'Task successfully removed' });
  });

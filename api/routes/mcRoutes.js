@@ -11,7 +11,7 @@ module.exports = function(app) {
     .get(todoList.list_all_tasks)
     .post(todoList.create_task);
 
-  app.route('/tasks/:taskId')
+  app.route('/tasks/:email')
     .get(todoList.get_task)
     .put(todoList.update_task)
     .delete(todoList.remove_task);
@@ -38,6 +38,9 @@ module.exports = function(app) {
     .get(course.get_course)
     .put(course.update_course)
     .delete(course.delete_course);
+
+  app.route('/course/:Id/:true')
+    .delete(course.remove_course);
 
   // Grades Routes
   app.route('/grades')
