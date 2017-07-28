@@ -5,6 +5,7 @@ module.exports = function(app) {
   var course = require('../controllers/CoursesController');
   var grade = require('../controllers/GradesController');
   var attendance = require('../controllers/AttendanceController');
+  var settings = require('../controllers/AppSettingController');
 
   // todoList Routes
   app.route('/tasks')
@@ -68,5 +69,14 @@ module.exports = function(app) {
     .get(attendance.get_attendance)
     .put(attendance.update_attendance)
     .delete(attendance.delete_attendance);
+
+  app.route('/settings')
+    .get(settings.get_settings)
+    .post(settings.add_setting);
+
+  app.route('/settings/:settingId')
+    .put(settings.update_setting)
+    .delete(settings.remove_setting);
+
 
 };

@@ -7,7 +7,7 @@ var express = require('express'),
   Course = require('./api/models/CoursesModel'),
   Attendance = require('./api/models/AttendanceModel'),
   Grade = require('./api/models/gradesModel'),
-  //Course = require('./api/models/CoursesModel'),
+  AppSetting = require('./api/models/AppSettingModel'),
   bodyParser = require('body-parser');
 
 mongoose.Promise = global.Promise;

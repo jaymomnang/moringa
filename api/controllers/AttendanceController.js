@@ -1,5 +1,6 @@
 'use strict';
 var mongoose = require('mongoose'),
+  AppSetting = mongoose.model('AppSetting'),
   Attendance = mongoose.model('Attendance');
 
 exports.list_all_attendance = function(req, res) {
@@ -14,32 +15,38 @@ exports.add_attendance = function(req, res) {
   var new_attendance = new Attendance(req.body);
 
   //check if data exists already.
-  Attendance.find({email: new_attendance.email, year: new_attendance.year, month: new_attendance.month, day: new_attendance.day}, 'att_id email', function(err, data) {
-    if (err) return err;
-    if (data.length == 0){
+  var grade = new_attendance.gradepoint;
+  AppSetting.find({setting: grade},  function(err, data) {
+    if (err) return arr;
+    new_attendance.gradepoint = data.value;
 
-      //get tha last attendance id
-      Attendance.findOne({}, 'att_id').sort({att_id: -1}).exec(function(err, attendance) {
-        if (err) return err;
+    Attendance.find({email: new_attendance.email, year: new_attendance.year, month: new_attendance.month, day: new_attendance.day}, 'att_id email', function(err, data) {
+      if (err) return err;
+      if (data.length == 0){
 
-        //get the next attendance number and save
-        var attId = 'ATT0000000';
+        //get tha last attendance id
+        Attendance.findOne({}, 'att_id').sort({att_id: -1}).exec(function(err, attendance) {
+          if (err) return err;
 
-        if (attendance != null){
-            attId = attendance.att_id;
-        }
+          //get the next attendance number and save
+          var attId = 'ATT0000000';
 
-        new_attendance.att_id =  getNewAttendanceId(attId);
-        new_attendance.save(function(err, attendance) {
-          if (err)
-            res.send(err);
-            res.json(attendance);
+          if (attendance != null){
+              attId = attendance.att_id;
+          }
+
+          new_attendance.att_id =  getNewAttendanceId(attId);
+          new_attendance.save(function(err, attendance) {
+            if (err)
+              res.send(err);
+              res.json(attendance);
+          });
+
         });
-
-      });
-    }else{
-      res.json({ message: 'attendance already recorded' });
-    }
+      }else{
+        res.json({ message: 'attendance already recorded' });
+      }
+    });
   });
 
 };
