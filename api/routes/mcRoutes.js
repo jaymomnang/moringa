@@ -11,10 +11,10 @@ module.exports = function(app) {
     .get(todoList.list_all_tasks)
     .post(todoList.create_task);
 
-  app.route('/tasks/:email')
+  app.route('/tasks/:taskId')
     .get(todoList.get_task)
     .put(todoList.update_task)
-    .delete(todoList.remove_task);
+    .delete(todoList.delete_task);
 
   // Users Routes
   app.route('/login')

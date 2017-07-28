@@ -1,6 +1,7 @@
 'use strict';
 var mongoose = require('mongoose'),
-  Task = mongoose.model('Tasks');
+  Task = mongoose.model('Tasks'),
+  Course = mongoose.model('Courses');
 
 exports.list_all_tasks = function(req, res) {
   Task.find({}, function(err, task) {
@@ -12,11 +13,19 @@ exports.list_all_tasks = function(req, res) {
 
 exports.create_task = function(req, res) {
   var new_task = new Task(req.body);
-  new_task.save(function(err, task) {
-    if (err)
-      res.send(err);
-      res.json(task);
+  console.log(new_task);
+  Course.find({course: new_task.courses.course}, function(err, course) {
+    if (err) res.send(err);
+    console.log(course);
+    new_task.courses.description = course.description;
+    new_task.courses.gradepoint = course.max_grade_point;
+    new_task.save(function(err, task) {
+      if (err)
+        res.send(err);
+        res.json(task);
+    });
   });
+
 };
 
 exports.get_task = function(req, res) {
@@ -44,7 +53,7 @@ exports.delete_task = function(req, res) {
 };
 
 exports.remove_task = function(req, res) {
-  Task.remove({email: req.params.email}, function(err, user) {
+  Task.remove({taskid: req.params.taskId}, function(err, user) {
     if (err) res.send(err);
      res.json({ message: 'Task successfully removed' });
  });
