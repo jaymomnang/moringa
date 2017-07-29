@@ -61,7 +61,7 @@ module.exports = function(app) {
   app.route('/attendance/getlast')
     .get(attendance.get_last_attendance);
 
-  app.route('/attendance/:email')
+  app.route('/attendance/:att_id')
     .get(attendance.get_user_attendance)
     .delete(attendance.remove_attendance);
 

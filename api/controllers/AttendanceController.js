@@ -13,9 +13,16 @@ exports.list_all_attendance = function(req, res) {
 
 exports.add_attendance = function(req, res) {
   var new_attendance = new Attendance(req.body);
-
+  console.log("=============================================");
   //check if data exists already.
   var grade = new_attendance.gradepoint;
+  console.log(grade);
+  if (grade < 8){
+    grade = 8;
+  }else if (grade > 13){
+    grade = 13;
+  }
+
   AppSetting.find({setting: grade},  function(err, data) {
     if (err) return arr;
     new_attendance.gradepoint = data.value;
@@ -102,7 +109,7 @@ exports.delete_attendance = function(req, res) {
 
 
 exports.remove_attendance = function(req, res) {
-  Attendance.remove({email: req.params.email}, function(err, user) {
+  Attendance.remove({att_id: req.params.att_id}, function(err, user) {
     if (err)
      res.send(err);
      res.json({ message: 'attendance successfully removed' });
