@@ -13,19 +13,18 @@ exports.list_all_attendance = function(req, res) {
 
 exports.add_attendance = function(req, res) {
   var new_attendance = new Attendance(req.body);
-  console.log("=============================================");
   //check if data exists already.
   var grade = new_attendance.gradepoint;
-  console.log(grade);
   if (grade < 8){
     grade = 8;
   }else if (grade > 13){
     grade = 13;
   }
 
-  AppSetting.find({setting: grade},  function(err, data) {
+  AppSetting.find({setting: grade.toString()},  function(err, data) {
     if (err) return arr;
-    new_attendance.gradepoint = data.value;
+    console.log(data);
+    new_attendance.gradepoint = data[0].value;
 
     Attendance.find({email: new_attendance.email, year: new_attendance.year, month: new_attendance.month, day: new_attendance.day}, 'att_id email', function(err, data) {
       if (err) return err;
