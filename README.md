@@ -18,10 +18,10 @@ To use the locally hosted mongodb database, run "mongorestore" from the command 
 then start the local mongodb by running "mongod" command. Also ensure the mongodb is running
 on the default port 27017.
 
-RUNNING THE BACKEND API
+RUNNING THIS API
 When the installation completes, open a command prompt and navigate (cd) to the extracted folder,
 then run "npm start" to start the service.
 
 NOTE: Ensure you have internet connect all through the installation process. This API doesn't have a UI
-but works directly with the MoringaCore app which is found in https://github.com/jaymomnang/moringacore.git
+but works directly with the MoringaCore app which is found at https://github.com/jaymomnang/moringacore.git
 Download and install to use this API
