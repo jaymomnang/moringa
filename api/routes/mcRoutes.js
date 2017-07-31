@@ -62,13 +62,15 @@ module.exports = function(app) {
     .get(attendance.get_last_attendance);
 
   app.route('/attendance/:att_id')
-    .get(attendance.get_user_attendance)
     .delete(attendance.remove_attendance);
 
   app.route('/attendance/:email/:att_id')
-    .get(attendance.get_attendance)
-    .put(attendance.update_attendance)
-    .delete(attendance.delete_attendance);
+      .get(attendance.get_attendance)
+      .put(attendance.update_attendance)
+      .delete(attendance.delete_attendance);
+
+  app.route('/attendance/:email')
+    .get(attendance.get_user_attendance);
 
   app.route('/settings')
     .get(settings.get_settings)
