@@ -23,9 +23,7 @@ exports.add_attendance = function(req, res) {
 
   AppSetting.find({setting: grade.toString()},  function(err, data) {
     if (err) return arr;
-    console.log(data);
     new_attendance.gradepoint = data[0].value;
-
     Attendance.find({email: new_attendance.email, year: new_attendance.year, month: new_attendance.month, day: new_attendance.day}, 'att_id email', function(err, data) {
       if (err) return err;
       if (data.length == 0){
