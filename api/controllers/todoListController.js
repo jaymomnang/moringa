@@ -13,10 +13,8 @@ exports.list_all_tasks = function(req, res) {
 
 exports.create_task = function(req, res) {
   var new_task = new Task(req.body);
-  console.log(new_task);
   Course.find({course: new_task.courses.course}, function(err, course) {
     if (err) res.send(err);
-    console.log(course);
     new_task.courses.description = course.description;
     new_task.courses.gradepoint = course.max_grade_point;
     new_task.save(function(err, task) {
