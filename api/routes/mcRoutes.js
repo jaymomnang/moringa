@@ -17,6 +17,9 @@ module.exports = function(app) {
     .put(todoList.update_task)
     .delete(todoList.delete_task);
 
+  app.route('/task/removeall')
+    .delete(todoList.removeall);
+
   // Users Routes
   app.route('/login')
     .get(user.get_users)
