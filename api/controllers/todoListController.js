@@ -12,38 +12,54 @@ exports.list_all_tasks = function(req, res) {
   });
 };
 
+//Create students tasks.
 exports.create_task = function(req, res) {
   var new_task = new Task(req.body);
-  Course.find({course: new_task.courses.course}, function(err, course) {
-    if (err) res.send(err);
-    new_task.courses.description = course.description;
-    new_task.courses.gradepoint = course.max_grade_point;
 
-    User.findOne({email: new_task.email}, function(err, user){
+  var students = req.body.students;
+  var i = 0;
+  var _max = students.length;
 
-      new_task.firstname = user.firstname;
-      new_task.lastname = user.lastname;
+  for (i == 0; i < _max; i++) {
 
-      Task.findOne({}, 'taskid').sort({taskid: -1}).exec(function(err, data) {
-        if (err) return err;
-        //get the next attendance number and save
-        var taskid = 'TSK0000000';
-        if (data != null){
+    new_task.email = students[i];
+    Course.find({course: new_task.courses.course}, function(err, course) {
+      if (err) res.send(err);
+
+      new_task.courses.description = course.description;
+      new_task.courses.gradepoint = course.max_grade_point;
+
+      User.findOne({email: new_task.email}, function(err, user){
+
+        new_task.firstname = user.firstname;
+        new_task.lastname = user.lastname;
+
+        Task.findOne({}, 'taskid').sort({taskid: -1}).exec(function(err, data) {
+          if (err) return err;
+          //get the next attendance number and save
+          var taskid = 'TSK0000000';
+          if (data != null){
             taskid = data.taskid;
-        }
-        new_task.taskid = getNewtaskId(taskid);
+          }
+          new_task.taskid = getNewtaskId(taskid);
+          //console.log(new_task);
+          new_task.save(function(err, task) {
+            if (err) res.send(err);
 
-        console.log(new_task);
-        new_task.save(function(err, task) {
-          if (err)
-            res.send(err);
-            res.json(task);
+            if (i+1 == _max){
+              Task.find({}, function(err, task) {
+                if (err) res.send(err);
+                res.json(task);
+              });
+            }
+
+          });
+
         });
-
       });
     });
-  });
 
+  }
 };
 
 exports.get_task = function(req, res) {
