@@ -1,8 +1,6 @@
 'use strict';
 var mongoose = require('mongoose'),
-  Task = mongoose.model('Tasks'),
-  Course = mongoose.model('Courses'),
-  User = mongoose.model('Users');
+  Task = mongoose.model('Tasks');
 
 exports.list_all_tasks = function(req, res) {
   Task.find({}, function(err, task) {
@@ -41,9 +39,15 @@ exports.create_task = function(req, res) {
 
     Task.findOne({}, 'taskid').sort({taskid: -1}).exec(function(error, data){
       if (error) res.send(error)
+      new_task.taskid = getNewtaskId(data);
+      console.log(new_task);
       if (i+1 == _max){
         Task.find({}, function(err, task) {
           if (err) res.send(err);
+
+          console.log('I got to the end');
+          console.log(task);
+
           res.json(task);
         });
       }
