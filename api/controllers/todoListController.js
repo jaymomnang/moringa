@@ -14,52 +14,49 @@ exports.list_all_tasks = function(req, res) {
 
 //Create students tasks.
 exports.create_task = function(req, res) {
-  var new_task = new Task(req.body);
 
+  var _instruct = req.body.description;
+  var _duedate = req.body.duedate;
+  var _course = req.body.courses.courses;
+  var _details = _course.split("/");
   var students = req.body.students;
   var i = 0;
   var _max = students.length;
 
   for (i == 0; i < _max; i++) {
 
-    new_task.email = students[i];
-    Course.find({course: new_task.courses.course}, function(err, course) {
-      if (err) res.send(err);
+    var new_task = new Task(req.body);
 
-      new_task.courses.description = course.description;
-      new_task.courses.gradepoint = course.max_grade_point;
+    //course assignment
+    new_task.courses.course = _details[0];
+    new_task.courses.description = _details[1];
+    new_task.courses.gradepoint = _details[2];
+    //student assignment
+    var _student = students[i].split("/");
+    new_task.email = _student[0];
+    new_task.firstname = _student[1];
+    new_task.lastname = _student[2];
+    new_task.description = _instruct;
+    new_task.duedate = _duedate;
 
-      User.findOne({email: new_task.email}, function(err, user){
 
-        new_task.firstname = user.firstname;
-        new_task.lastname = user.lastname;
-
-        Task.findOne({}, 'taskid').sort({taskid: -1}).exec(function(err, data) {
-          if (err) return err;
-          //get the next attendance number and save
-          var taskid = 'TSK0000000';
-          if (data != null){
-            taskid = data.taskid;
-          }
-          new_task.taskid = getNewtaskId(taskid);
-          //console.log(new_task);
-          new_task.save(function(err, task) {
-            if (err) res.send(err);
-
-            if (i+1 == _max){
-              Task.find({}, function(err, task) {
-                if (err) res.send(err);
-                res.json(task);
-              });
-            }
-
-          });
-
+    var promise = Task.findOne({}, 'taskid').sort({taskid: -1}).exec();
+    promise.then(function(task) {
+      new_task.taskid = getNewtaskId(task.taskid);
+      return new_task.save(); // returns a promise
+    }).then(function(user) {
+      if(i+1 == _max){
+        Task.find({}, function(err, task) {
+          if (err) res.send(err);
+          res.json(task);
         });
-      });
+      }
+    }).catch(function(err){
+      // just need one of these
+      return err;
+      console.log('error:', err);
     });
-
-  }
+  };
 };
 
 exports.get_task = function(req, res) {
