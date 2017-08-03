@@ -17,7 +17,7 @@ exports.create_task = function(req, res) {
 
   var _instruct = req.body.description;
   var _duedate = req.body.duedate;
-  var _course = req.body.courses.courses;
+  var _course = req.body.course;
   var _details = _course.split("/");
   var students = req.body.students;
   var i = 0;
@@ -39,23 +39,16 @@ exports.create_task = function(req, res) {
     new_task.description = _instruct;
     new_task.duedate = _duedate;
 
-
-    var promise = Task.findOne({}, 'taskid').sort({taskid: -1}).exec();
-    promise.then(function(task) {
-      new_task.taskid = getNewtaskId(task.taskid);
-      return new_task.save(); // returns a promise
-    }).then(function(user) {
-      if(i+1 == _max){
+    Task.findOne({}, 'taskid').sort({taskid: -1}).exec(function(error, data){
+      if (error) res.send(error)
+      if (i+1 == _max){
         Task.find({}, function(err, task) {
           if (err) res.send(err);
           res.json(task);
         });
       }
-    }).catch(function(err){
-      // just need one of these
-      return err;
-      console.log('error:', err);
     });
+
   };
 };
 
