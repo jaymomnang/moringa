@@ -39,6 +39,13 @@ exports.create_task = function(req, res) {
 
     Task.findOne({}, 'taskid').sort({taskid: -1}).exec(function(error, data){
       if (error) res.send(error)
+
+      var taskid = 'TSK0000000';
+      console.log(data);
+      if (data != null){
+          taskid = data;
+      }
+
       new_task.taskid = getNewtaskId(data);
       console.log(new_task);
       if (i+1 == _max){
