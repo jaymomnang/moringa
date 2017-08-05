@@ -1,6 +1,7 @@
 'use strict';
 var mongoose = require('mongoose'),
-  Task = mongoose.model('Tasks');
+    async = require('async'),
+    Task = mongoose.model('Tasks');
 
 exports.list_all_tasks = function(req, res) {
   Task.find({}, function(err, task) {
@@ -20,47 +21,59 @@ exports.create_task = function(req, res) {
   var students = req.body.students;
   var i = 0;
   var _max = students.length;
+  var listItems = [];
 
-  for (i == 0; i < _max; i++) {
+  Task.findOne({}, 'taskid').sort({taskid: -1}).exec(function(error, data){
+    if (error) res.send(error)
 
-    var new_task = new Task(req.body);
+    var taskid = 'TSK0000000';
+    if (data != null){
+        taskid = data;
+    }
 
-    //course assignment
-    new_task.courses.course = _details[0];
-    new_task.courses.description = _details[1];
-    new_task.courses.gradepoint = _details[2];
-    //student assignment
-    var _student = students[i].split("/");
-    new_task.email = _student[0];
-    new_task.firstname = _student[1];
-    new_task.lastname = _student[2];
-    new_task.description = _instruct;
-    new_task.duedate = _duedate;
+    for (i == 0; i < _max; i++) {
 
-    Task.findOne({}, 'taskid').sort({taskid: -1}).exec(function(error, data){
-      if (error) res.send(error)
+      var new_task = new Task(req.body);
 
-      var taskid = 'TSK0000000';
-      console.log(data);
-      if (data != null){
-          taskid = data;
-      }
+      //course assignment
+      new_task.courses.course = _details[0];
+      new_task.courses.description = _details[1];
+      new_task.courses.gradepoint = _details[2];
+      //student assignment
+      var _student = students[i].split("/");
+      new_task.email = _student[0];
+      new_task.firstname = _student[1];
+      new_task.lastname = _student[2];
+      new_task.description = _instruct;
+      new_task.duedate = _duedate;
+      new_task.taskid = getNewtaskId(taskid);
 
-      new_task.taskid = getNewtaskId(data);
-      console.log(new_task);
-      if (i+1 == _max){
-        Task.find({}, function(err, task) {
-          if (err) res.send(err);
+      taskid = new_task.taskid;
+      listItems[i] = new_task;
 
-          console.log('I got to the end');
-          console.log(task);
+    };
 
-          res.json(task);
-        });
-      }
+    var idx = 0;
+    async.each(listItems, function(listItem, next) {
+
+      listItem.position = idx;
+      listItem.save(function(err, results) {
+        // i is increased because we need it on line 5
+        i++;
+        // the next() function is called when you
+        // want to move to the next item in the array
+        next();
+      });
+    }, function(err) {
+      // all data has been updated
+      // do whatever you want
+      Task.find({}, function(err, task) {
+        if (err) res.send(err);
+        res.json(task);
+      });
     });
 
-  };
+  });
 };
 
 exports.get_task = function(req, res) {

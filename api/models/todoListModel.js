@@ -21,6 +21,7 @@ var TaskSchema = new Schema({
     type: String,
     Required: 'Kindly enter your last name'
   },
+  
   description: {
     type: String,
     Required: 'Kindly enter the name of the task'
