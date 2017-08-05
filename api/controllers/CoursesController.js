@@ -42,9 +42,11 @@ exports.update_course = function(req, res) {
 
 exports.delete_course = function(req, res) {
    Course.findOneAndUpdate({course: req.params.course}, req.body, {new: true}, function(err, course) {
-    if (err)
-      res.send(err);
-      res.json({ message: 'Course successfully deactivated' });
+     if (err) res.send(err);
+     Course.find({}, function(err, course) {
+       if (err) res.send(err);
+       res.json(course);
+     });
   });
 };
 

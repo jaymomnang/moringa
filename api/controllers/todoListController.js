@@ -28,7 +28,7 @@ exports.create_task = function(req, res) {
 
     var taskid = 'TSK0000000';
     if (data != null){
-        taskid = data;
+        taskid = data.taskid;
     }
 
     for (i == 0; i < _max; i++) {
