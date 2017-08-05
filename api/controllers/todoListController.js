@@ -58,15 +58,13 @@ exports.create_task = function(req, res) {
 
       listItem.position = idx;
       listItem.save(function(err, results) {
-        // i is increased because we need it on line 5
-        i++;
+        idx++;
         // the next() function is called when you
         // want to move to the next item in the array
         next();
       });
     }, function(err) {
-      // all data has been updated
-      // do whatever you want
+      // all data has been updated do whatever you want
       Task.find({}, function(err, task) {
         if (err) res.send(err);
         res.json(task);

@@ -19,8 +19,6 @@ exports.create_course = function(req, res) {
       if (err) res.send(err);
       res.json(course);
     });
-
-
   });
 };
 
@@ -34,9 +32,8 @@ exports.get_course = function(req, res) {
 
 exports.update_course = function(req, res) {
   Course.findOneAndUpdate({course: req.params.course}, req.body, {new: true}, function(err, course) {
-    if (err)
-      res.send(err);
-      res.json(course);
+    if (err) res.send(err);
+    res.json(course);
   });
 };
 
