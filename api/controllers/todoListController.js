@@ -14,13 +14,26 @@ exports.list_all_tasks = function(req, res) {
 //Create students tasks.
 exports.create_task = function(req, res) {
 
+  if (req.body.course == undefined){
+    Task.find({}, function(err, task) {
+      if (err) res.send(err);
+      res.json(task);
+    });
+  }else{
+
   var _instruct = req.body.description;
   var _duedate = req.body.duedate;
   var _course = req.body.course;
-  var _details = _course.split("/");
+  var _details;
+  if (_details != undefined){
+  _details = _course.split("/");
+  }
   var students = req.body.students;
   var i = 0;
-  var _max = students.length;
+  var _max = 0;
+  if (students != undefined){
+    students.length;
+  }
   var listItems = [];
 
   Task.findOne({}, 'taskid').sort({taskid: -1}).exec(function(error, data){
@@ -72,6 +85,7 @@ exports.create_task = function(req, res) {
     });
 
   });
+}
 };
 
 exports.get_task = function(req, res) {
